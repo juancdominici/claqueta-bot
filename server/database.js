@@ -1,16 +1,17 @@
 const mongoose = require("mongoose");
-const URI = "mongodb://localhost:27017/db";
+const URI = process.env.MONGO_URI
 
 mongoose
-  .connect(URI, { useNewUrlParser: true, useUnifiedTopology: true })
+  .set('useFindAndModify', false)
+  .connect(URI, { useNewUrlParser: true,  useUnifiedTopology: true })
   .then((db) =>
     console.log(
-      "Conectado a la base de datos Mongo en: ",
-      db.connections[0]._connectionString
+      "Conectado a la base de datos en: ",
+      `\x1b[33m${db.connections[0].host}:${db.connections[0].port}`
     )
   )
   .catch((err) =>
-    console.error("Error al conectar a la base de datos Mongo: ", err)
+    console.error("Error al conectar a la base de datos Mongo -", err)
   );
 
 module.exports = mongoose;
